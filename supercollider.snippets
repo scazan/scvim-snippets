@@ -1,0 +1,17 @@
+# SuperCollider
+##############################################################
+snippet ndef "Ndef"
+(
+
+	Ndef(\\$1, {
+		$2;
+	});
+
+)
+
+Ndef(\\$1).play;
+endsnippet
+
+snippet nset "Ndef.set"
+Ndef(\\$1).set(\\$2);
+endsnippet
