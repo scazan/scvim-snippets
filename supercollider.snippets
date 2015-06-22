@@ -1,14 +1,46 @@
 # SuperCollider
 ##############################################################
 
+# Analysis helpers
+snippet freqscope "Create a FreqScope"
+FreqScope.new(400, 200, 0, server: s);
+endsnippet
+
+
+# Buffers
+snippet bufread "Create an open dialog that loads a file into a Buffer"
+(
+Dialog.openPanel({ arg path;
+	${1:b} = Buffer.read(s, path, action: { |buffer| 
+		"".postln;
+		"Loaded: ".post;
+		path.postln;
+		"Channels: ".post;
+		buffer.numChannels.postln;
+	});
+});
+$0
+)
+endsnippet
+
+
+# Envelopes
+snippet envgen "EnvGen.ar" i
+EnvGen.ar($1, ${2:doneAction:2});
+endsnippet
+
+snippet perc "EnvGen.ar" i
+Env.perc(${1:0.05}, ${2:1}, ${3:1}, ${4:-4});
+endsnippet
+
+
 # Ndef helper functions
 snippet ndef "Create an Ndef"
 (
-
 	Ndef(\\$1, {
 		$2;
 	});
-
+$0
 )
 
 Ndef(\\$1).playN(${3:0});
@@ -19,6 +51,7 @@ snippet nset "Create an Ndef.set"
 Ndef(\\$1).set(\\$2);
 endsnippet
 
+
 #SynthDef helper functions
 snippet synthdef "Create a SynthDef"
 (
@@ -26,6 +59,7 @@ snippet synthdef "Create a SynthDef"
 		$3
 		Out.ar(${4:0}, ${5:output});
 	}).add;
+	$0
 )
 
 ${6:x} = Synth(\\$1).play;
@@ -33,19 +67,27 @@ $6.free;
 endsnippet
 
 snippet "synth" "Instantiate a Synth"
-${1:x} = Synth(\\$2).play;
+${1:x} = Synth(\\$2).play;$0
 $1.free;
 endsnippet
-
 
 
 # Patterns
 snippet pbind "Create a Pbind"
 (
 	${1:x} = Pbind(
-		\\$2, $3,
+		${2:\\${3:instrument}, \\${4:synthName},
+		${7:\\${8:prop}, ${9:Pseq}([$10],${11:inf}),
+		${12:\\${13:prop}, ${14:Pseq}([$15],${16:inf})},}}
 	);
+	$0
 )
-$1.play;
-
+${17:y} = $1.play;
+$17.stop;
 endsnippet
+
+snippet patt "Create a Pattern"
+${1:Pseq}([$2],${3:inf});$0
+endsnippet
+
+
