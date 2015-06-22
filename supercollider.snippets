@@ -1,6 +1,8 @@
 # SuperCollider
 ##############################################################
-snippet ndef "Ndef"
+
+# Ndef helper functions
+snippet ndef "Create an Ndef"
 (
 
 	Ndef(\\$1, {
@@ -9,9 +11,41 @@ snippet ndef "Ndef"
 
 )
 
-Ndef(\\$1).play;
+Ndef(\\$1).playN(${3:0});
+Ndef(\\$1).stop();
 endsnippet
 
-snippet nset "Ndef.set"
+snippet nset "Create an Ndef.set"
 Ndef(\\$1).set(\\$2);
+endsnippet
+
+#SynthDef helper functions
+snippet synthdef "Create a SynthDef"
+(
+	SynthDef(\\$1, { | $2 |
+		$3
+		Out.ar(${4:0}, ${5:output});
+	}).add;
+)
+
+${6:x} = Synth(\\$1).play;
+$6.free;
+endsnippet
+
+snippet "synth" "Instantiate a Synth"
+${1:x} = Synth(\\$2).play;
+$1.free;
+endsnippet
+
+
+
+# Patterns
+snippet pbind "Create a Pbind"
+(
+	${1:x} = Pbind(
+		\\$2, $3,
+	);
+)
+$1.play;
+
 endsnippet
