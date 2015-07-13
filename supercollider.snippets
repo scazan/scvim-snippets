@@ -37,13 +37,13 @@ endsnippet
 # Ndef helper functions
 snippet ndef "Create an Ndef"
 (
-	Ndef(\\$1, {
-		$2;
+	Ndef(\\$1, { ${2:| ${3:amp=0, freq=2000} |}
+		$4;
 	});
 $0
 )
 
-Ndef(\\$1).playN(${3:0});
+Ndef(\\$1).play();
 Ndef(\\$1).stop();
 endsnippet
 
@@ -72,6 +72,22 @@ $1.free;
 endsnippet
 
 
+# Tasks
+snippet "tdef" "Create an empty Tdef"
+(
+	Tdef(\\$1, {
+		${4:{
+			${5:}
+		}.loop;}
+	});
+$0
+)
+
+Tdef(\\$1).play();
+Tdef(\\$1).stop();
+
+endsnippet
+
 # Patterns
 snippet pbind "Create a Pbind"
 (
@@ -86,8 +102,10 @@ ${17:y} = $1.play;
 $17.stop;
 endsnippet
 
-snippet patt "Create a Pattern"
+snippet patt "Create a Pattern" i
 ${1:Pseq}([$2],${3:inf});$0
 endsnippet
 
-
+snippet demand "Create a demand pattern" i
+Demand.kr(Impulse.kr($1), 0, ${2:Dseq}([$3], inf) )
+endsnippet
