@@ -88,6 +88,20 @@ Tdef(\\$1).stop();
 
 endsnippet
 
+
+# OSC
+snippet "oscdef" "OSCdef"
+(
+	OSCdef(\\$1, {
+		|msg, time, addr, recvPort| 
+
+		$3
+
+	}, '/$2');
+)
+endsnippet
+
+
 # Patterns
 snippet pbind "Create a Pbind"
 (
