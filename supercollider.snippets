@@ -23,6 +23,20 @@ $0
 )
 endsnippet
 
+snippet playbuf "Create a simple buffer player"
+(
+	Ndef(\\$1, { ${2:| ${3:rate=1, amp=0} |}
+		var buffer=${4:b};
+
+		PlayBuf.ar(buffer.numChannels, bufnum: buffer, rate: rate, trigger: 1, startPos: 0, loop: 1) * amp;
+	});
+
+)
+
+Ndef(\\$1).play();
+Ndef(\\$1).stop(0);
+Ndef(\\$1).xset();
+endsnippet
 
 # Envelopes
 snippet envgen "EnvGen.ar" i
@@ -44,13 +58,26 @@ $0
 )
 
 Ndef(\\$1).play();
-Ndef(\\$1).stop();
+Ndef(\\$1).stop(0);
+Ndef(\\$1).xset();
 endsnippet
 
 snippet nset "Create an Ndef.set"
 Ndef(\\$1).set(\\$2);
 endsnippet
 
+snippet nxset "Create an Ndef.xset"
+Ndef(\\$1).xset(\\$2);
+endsnippet
+# Default Ndefs
+snippet liveIn "Create liveInput Ndef"
+(
+	Ndef(\liveInput, { | amp=0 |
+		SoundIn.ar(0);
+	});
+
+)
+endsnippet
 
 #SynthDef helper functions
 snippet synthdef "Create a SynthDef"
@@ -105,15 +132,17 @@ endsnippet
 # Patterns
 snippet pbind "Create a Pbind"
 (
-	${1:x} = Pbind(
-		${2:\\${3:instrument}, \\${4:synthName},
-		${7:\\${8:prop}, ${9:Pseq}([$10],${11:inf}),
-		${12:\\${13:prop}, ${14:Pseq}([$15],${16:inf})},}}
+	Pdef(\\$1,
+		Pbind(
+			${2:\\${3:instrument}, \\${4:synthName},
+			${7:\\${8:prop}, ${9:Pseq}([$10],${11:inf}),
+			${12:\\${13:prop}, ${14:Pseq}([$15],${16:inf})},}}
+		)
 	);
 	$0
 )
-${17:y} = $1.play;
-$17.stop;
+Pdef(\\$1).play;
+Pdef(\\$1).stop;
 endsnippet
 
 snippet patt "Create a Pattern" i
